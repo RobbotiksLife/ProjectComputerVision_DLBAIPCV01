@@ -82,3 +82,26 @@ if __name__ == '__main__':
     test_dataset = YoloFormatDataset("OxfordPets_v2_by_species/test", transforms=get_transform())
     evaluate_custom(model, test_dataset, get_transform_func=get_transform)
 
+
+# 📊 Evaluation Results (per class):
+#
+# Class 1:
+#   TP: 120, FP: 39, FN: 5, TN: 211
+#   Precision: 0.7547
+#   Recall:    0.9600
+#   F1 Score:  0.8451
+#   Accuracy:  0.8827
+#
+# Class 2:
+#   TP: 231, FP: 22, FN: 12, TN: 124
+#   Precision: 0.9130
+#   Recall:    0.9506
+#   F1 Score:  0.9315
+#   Accuracy:  0.9126
+#
+# Class all:
+#   TP: 351, FP: 61, FN: 17, TN: 335
+#   Precision: 0.8519
+#   Recall:    0.9538
+#   F1 Score:  0.9000
+#   Accuracy:  0.8979

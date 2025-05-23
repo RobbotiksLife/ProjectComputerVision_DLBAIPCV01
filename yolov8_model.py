@@ -38,22 +38,16 @@ def test_predictions_yolov8(test_image_list: List[str] = None):
         # print(result.boxes)
 
 def test_yolov8():
-    # Path to your trained model weights (change if you saved under different name)
     model_path = 'yolov8_training/yolov8s_oxfordpets/weights/best.pt'
-
-    # Absolute path to your data.yaml
     data_yaml = os.path.abspath('OxfordPets_v2_by_species/data.yaml')
 
-    # Load the trained model
     model = YOLO(model_path)
 
-    # Run evaluation on the test set (force use of 'test' split)
     results = model.val(
         data=data_yaml,
-        split='test'  # explicitly use the test set
+        split='test'
     )
 
-    print("\n✅ Evaluation complete.")
     print("Metrics:")
     print(results)
 
@@ -61,4 +55,11 @@ if __name__ == '__main__':
     # train_yolov8()
     # print(6151.08/60) -> 102.518 min
 
+    # test_predictions_yolov8()
+
     test_yolov8()
+
+# Class     Images  Instances      Box(P          R      mAP50  mAP50-95):
+#   all        368        368      0.973      0.964       0.99      0.833
+#   cat        125        125      0.981       0.96      0.989      0.869
+#   dog        243        243      0.964      0.967      0.991      0.798

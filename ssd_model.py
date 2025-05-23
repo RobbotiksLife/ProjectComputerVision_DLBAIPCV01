@@ -60,30 +60,54 @@ def main(num_epochs = 10):
 
 
 if __name__ == '__main__':
-    # Train
-    Path('ssd').mkdir(parents=True, exist_ok=True)
-    utils.print_execution_time(lambda: main(num_epochs=15))
-    # print(2013.12/60) # 2013.12 -> 5 epochs // Train for 15 later
+    # # Train
+    # Path('ssd').mkdir(parents=True, exist_ok=True)
+    # utils.print_execution_time(lambda: main(num_epochs=15))
+    # print(10510.54/60) # 175.1756 min -> 15 epochs
 
-    # # -------------------------------------------------------
-    # # Evaluate
-    # model = get_model(3)
-    # model.load_state_dict(torch.load('ssd/ssd_cat_dog.pth'))
-    # model.to('cuda')
-    #
+    # -------------------------------------------------------
+    # Evaluate
+    model = get_model(3)
+    model.load_state_dict(torch.load('ssd/ssd_cat_dog.pth'))
+    model.to('cuda')
+
     # # Test prediction
-    # # model.eval()
-    # # image_paths = [
-    # #     f'OxfordPets_v2_by_species\\test\\images\\{n}' for n in [
-    # #         'american_pit_bull_terrier_134_jpg.rf.a54d3d1580baca55216d2e195d12c515.jpg',
-    # #         'Abyssinian_15_jpg.rf.0e12ac0df99238e4f77a9eb02877b769.jpg'
-    # #     ]
-    # # ]
-    # # predictions = utils.predict(image_paths, model, get_transform_func=get_transform, device='cuda')
-    # # predictions = utils.filter_predictions(predictions, score_threshold=0.5)
-    # # for image_path, prediction in zip(image_paths, predictions):
-    # #     utils.show_prediction(image_path, prediction)
-    #
-    # # Test Performace
-    # test_dataset = YoloFormatDataset("OxfordPets_v2_by_species/test", transforms=get_transform())
-    # evaluate_custom(model, test_dataset, get_transform_func=get_transform)
+    # model.eval()
+    # image_paths = [
+    #     f'OxfordPets_v2_by_species\\test\\images\\{n}' for n in [
+    #         'american_pit_bull_terrier_134_jpg.rf.a54d3d1580baca55216d2e195d12c515.jpg',
+    #         'Abyssinian_15_jpg.rf.0e12ac0df99238e4f77a9eb02877b769.jpg'
+    #     ]
+    # ]
+    # predictions = utils.predict(image_paths, model, get_transform_func=get_transform, device='cuda')
+    # predictions = utils.filter_predictions(predictions, score_threshold=0.5)
+    # for image_path, prediction in zip(image_paths, predictions):
+    #     utils.show_prediction(image_path, prediction)
+
+    # Test Performace
+    test_dataset = YoloFormatDataset("OxfordPets_v2_by_species/test", transforms=get_transform())
+    evaluate_custom(model, test_dataset, get_transform_func=get_transform)
+
+
+# 📊 Evaluation Results (per class):
+#
+# Class 1:
+#   TP: 72, FP: 32, FN: 53, TN: 242
+#   Precision: 0.6923
+#   Recall:    0.5760
+#   F1 Score:  0.6288
+#   Accuracy:  0.7870
+#
+# Class 2:
+#   TP: 171, FP: 59, FN: 72, TN: 123
+#   Precision: 0.7435
+#   Recall:    0.7037
+#   F1 Score:  0.7230
+#   Accuracy:  0.6918
+#
+# Class all:
+#   TP: 243, FP: 91, FN: 125, TN: 365
+#   Precision: 0.7275
+#   Recall:    0.6603
+#   F1 Score:  0.6923
+#   Accuracy:  0.7379

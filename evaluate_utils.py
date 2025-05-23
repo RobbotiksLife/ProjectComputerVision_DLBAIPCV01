@@ -25,6 +25,12 @@ def match_predictions(pred_boxes, gt_boxes, iou_threshold=0.5):
 
     return matches, unmatched_gt, unmatched_pred
 
+def combine_metrics(metrics):
+    combined = {'TP': 0, 'FP': 0, 'FN': 0, 'TN': 0}
+    for cls_metrics in metrics.values():
+        for key in combined:
+            combined[key] += cls_metrics[key]
+    return combined
 
 def evaluate_custom(model, dataset, get_transform_func, device='cuda', iou_threshold=0.5):
     num_classes = 3  # two classes + 1 something = 3
@@ -86,6 +92,7 @@ def evaluate_custom(model, dataset, get_transform_func, device='cuda', iou_thres
                     metrics[cls]['TN'] += 1
 
     print("\n📊 Evaluation Results (per class):")
+    metrics['all'] = combine_metrics(metrics)
     for cls, m in metrics.items():
         TP, FP, FN, TN = m['TP'], m['FP'], m['FN'], m['TN']
         precision = TP / (TP + FP + 1e-8)
