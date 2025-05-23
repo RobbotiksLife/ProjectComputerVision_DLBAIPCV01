@@ -10,6 +10,7 @@ from custom_yolo_dataset import YoloFormatDataset
 from torchvision.transforms import v2 as T
 
 from engine.engine import train_one_epoch
+from engine.utils import collate_fn
 from evaluate_utils import evaluate_custom
 
 
@@ -40,7 +41,7 @@ def main(num_epochs = 10):
     dataset = YoloFormatDataset(root="OxfordPets_v2_by_species/train", transforms=get_transform())
     # dataset_valid = YoloFormatDataset(root="OxfordPets_v2_by_species/valid", transforms=get_transform()) # <- Uncoment if desided to use valid imagies during training
 
-    data_loader = DataLoader(dataset, batch_size=8, shuffle=True, collate_fn=lambda b: tuple(zip(*b)))  # collate_fn=utils.collate_fn
+    data_loader = DataLoader(dataset, batch_size=8, shuffle=True, collate_fn=collate_fn)
     # data_loader_valid = DataLoader(dataset_valid, batch_size=8, shuffle=False, collate_fn=lambda b: tuple(zip(*b))) # <- Uncoment if desided to use valid imagies during training
 
     model = get_model(num_classes=3) # 2 classes + 1 something = 3

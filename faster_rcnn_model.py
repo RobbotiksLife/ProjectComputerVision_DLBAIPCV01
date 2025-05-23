@@ -1,9 +1,12 @@
+from pathlib import Path
+
 import torch
 import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torch.utils.data import DataLoader
 from custom_yolo_dataset import YoloFormatDataset
 from engine.engine import train_one_epoch
+from engine.utils import collate_fn
 import utils
 import transforms as T
 
@@ -34,7 +37,7 @@ def main(num_epochs=10):
     dataset = YoloFormatDataset('OxfordPets_v2_by_species/train', transforms=get_transform())
     # dataset_valid = YoloFormatDataset('OxfordPets_v2_by_species/valid', transforms=get_transform())
 
-    data_loader = DataLoader(dataset, batch_size=1, shuffle=True, collate_fn=utils.collate_fn)
+    data_loader = DataLoader(dataset, batch_size=1, shuffle=True, collate_fn=collate_fn)
     # data_loader_valid = DataLoader(dataset_valid, batch_size=1, shuffle=False, collate_fn=utils.collate_fn)
 
     model = get_model(num_classes=3)  # 2 classes + background
@@ -54,10 +57,10 @@ def main(num_epochs=10):
 
 
 if __name__ == '__main__':
-    # Train
+    # # Train
     # Path('faster_rcnn').mkdir(parents=True, exist_ok=True)
     # utils.print_execution_time(lambda: main(num_epochs=2))
-    # print(7379.60/60) -> 12.99 min
+    # # print(7379.60/60) -> 12.99 min
 
     # -------------------------------------------------------
     # Evaluate
