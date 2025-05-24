@@ -5,6 +5,8 @@ import os
 YOLO_MODEL = "yolov8s"
 YOLO_PROJECT_NAME = "yolov8_training"
 YOLO_OXFORD_PETS_NAME = f"{YOLO_MODEL}_oxfordpets"
+MODEL_BEST_PATH = f"{YOLO_PROJECT_NAME}/{YOLO_OXFORD_PETS_NAME}/weights/best.pt"
+
 
 def train_yolov8():
     data_yaml = os.path.abspath('OxfordPets_v2_by_species/data.yaml')
@@ -29,7 +31,7 @@ def test_predictions_yolov8(test_image_list: List[str] = None):
                 'Abyssinian_15_jpg.rf.0e12ac0df99238e4f77a9eb02877b769.jpg'
             ]
         ]
-    model = YOLO(f'{YOLO_PROJECT_NAME}/{YOLO_OXFORD_PETS_NAME}/weights/best.pt')
+    model = YOLO(MODEL_BEST_PATH)
     results = model(
         test_image_list
     )
@@ -38,10 +40,9 @@ def test_predictions_yolov8(test_image_list: List[str] = None):
         # print(result.boxes)
 
 def test_yolov8():
-    model_path = 'yolov8_training/yolov8s_oxfordpets/weights/best.pt'
     data_yaml = os.path.abspath('OxfordPets_v2_by_species/data.yaml')
 
-    model = YOLO(model_path)
+    model = YOLO(MODEL_BEST_PATH)
 
     results = model.val(
         data=data_yaml,
@@ -51,13 +52,36 @@ def test_yolov8():
     print("Metrics:")
     print(results)
 
+# from ultralytics import YOLO
+# import cv2
+# import os
+
+def run_yolov8_native(video_path, model_path=MODEL_BEST_PATH, output_path='runs/detect/predict'):
+    model = YOLO(model_path)
+
+    # Run prediction — this handles everything: reading video, processing, saving output
+    model.predict(
+        source=video_path,        # path to video file or 0 for webcam
+        conf=0.25,                # confidence threshold
+        save=True,                # save the video output
+        save_txt=False,           # optionally save results as text
+        project='runs/detect',    # base output folder
+        name='predict',           # subfolder name
+        exist_ok=True             # overwrite if folder exists
+    )
+
+    print(f"Output saved in: {output_path}")
+
+
 if __name__ == '__main__':
     # train_yolov8()
     # print(6151.08/60) -> 102.518 min
 
     # test_predictions_yolov8()
 
-    test_yolov8()
+    # test_yolov8()
+
+    run_yolov8_native(video_path="my_cat.mp4")
 
 # Class     Images  Instances      Box(P          R      mAP50  mAP50-95):
 #   all        368        368      0.973      0.964       0.99      0.833
