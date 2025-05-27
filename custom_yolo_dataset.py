@@ -33,7 +33,7 @@ class YoloFormatDataset(Dataset):
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         labels = torch.as_tensor(labels, dtype=torch.int64)
 
-        # Use a scalar tensor instead of 1-element tensor for engine
+        # Use a just tensor instead of [tensor] for engine.py to work
         image_id = torch.tensor(idx)
         # image_id = torch.tensor([idx])
 

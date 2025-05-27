@@ -4,35 +4,31 @@ import torch
 
 from PIL import Image
 
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
 
 def print_execution_time(task):
     start_time = time.time()
     task()
     end_time = time.time()
 
-    # Display results
     execution_time = end_time - start_time
     print(f"execution_time: {execution_time:.2f}")
 
 
 @torch.no_grad()
 def predict(image_paths, model, get_transform_func, device='cuda'):
-    # Load and preprocess images
     images = []
     for image_path in image_paths:
         image = get_transform_func()(Image.open(image_path).convert("RGB")).to(device)
         images.append(image)
 
-    # Run inference
     model.eval()
     with torch.no_grad():
         outputs = model(images)
 
     return outputs
-
-
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 
 def random_color_rgb():
     return (random(), random(), random())

@@ -20,8 +20,6 @@ def get_model(num_classes):
     classification_head = model.head.classification_head
 
     layers = [m for m in classification_head.modules() if isinstance(m, torch.nn.Conv2d)]
-
-    # Get in_channels for each layer
     in_channels = [layer.in_channels for layer in layers if isinstance(layer, torch.nn.Conv2d)]
     num_anchors = [layer.out_channels // 91 for layer in layers if isinstance(layer, torch.nn.Conv2d)]
 

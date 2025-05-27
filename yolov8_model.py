@@ -2,6 +2,7 @@ from typing import List
 from ultralytics import YOLO
 import os
 
+
 YOLO_MODEL = "yolov8s"
 YOLO_PROJECT_NAME = "yolov8_training"
 YOLO_OXFORD_PETS_NAME = f"{YOLO_MODEL}_oxfordpets"
@@ -52,25 +53,20 @@ def test_yolov8():
     print("Metrics:")
     print(results)
 
-# from ultralytics import YOLO
-# import cv2
-# import os
-
 def run_yolov8_native(video_path, model_path=MODEL_BEST_PATH, output_path='runs/detect/predict'):
     model = YOLO(model_path)
 
-    # Run prediction — this handles everything: reading video, processing, saving output
     model.predict(
-        source=video_path,        # path to video file or 0 for webcam
-        conf=0.25,                # confidence threshold
-        save=True,                # save the video output
-        save_txt=False,           # optionally save results as text
-        project='runs/detect',    # base output folder
-        name='predict',           # subfolder name
-        exist_ok=True             # overwrite if folder exists
+        source=video_path,
+        conf=0.25,
+        save=True,
+        save_txt=False,
+        project='runs/detect',
+        name='predict',
+        exist_ok=True
     )
 
-    print(f"Output saved in: {output_path}")
+    print(f"Saved to: {output_path}")
 
 
 if __name__ == '__main__':

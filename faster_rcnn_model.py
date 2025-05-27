@@ -22,7 +22,6 @@ import torch.backends.cudnn
 torch.backends.cudnn.benchmark = False
 
 def get_model(num_classes):
-    # model = fasterrcnn_resnet50_fpn(pretrained=True)
     model = fasterrcnn_resnet50_fpn(weights=weights)
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
@@ -40,7 +39,7 @@ def main(num_epochs=10):
     data_loader = DataLoader(dataset, batch_size=1, shuffle=True, collate_fn=collate_fn)
     # data_loader_valid = DataLoader(dataset_valid, batch_size=1, shuffle=False, collate_fn=utils.collate_fn)
 
-    model = get_model(num_classes=3)  # 2 classes + background
+    model = get_model(num_classes=3)  # 2 classes + background = 3
     model.to('cuda')
     # device = torch.device('cpu')
     # model.to(device)

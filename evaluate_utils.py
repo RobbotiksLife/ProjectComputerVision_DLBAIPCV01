@@ -8,7 +8,7 @@ def match_predictions(pred_boxes, gt_boxes, iou_threshold=0.5):
     if len(pred_boxes) == 0 or len(gt_boxes) == 0: # test for obvious results
         return [], list(range(len(gt_boxes))), list(range(len(pred_boxes)))
 
-    iou_matrix = box_iou(pred_boxes, gt_boxes) # define the IOU metrix
+    iou_matrix = box_iou(pred_boxes, gt_boxes) # use IOU func
     matched_gt = set()
     matched_pred = set()
     matches = []
@@ -48,8 +48,6 @@ def evaluate_custom(model, dataset, get_transform_func, device='cuda', iou_thres
 
         preds = utils.predict(batch_paths, model, get_transform_func, device=device)
         preds = utils.filter_predictions(preds, score_threshold=0.5)
-
-        # define results
         for prediction, target in zip(preds, batch_targets):
             pred_boxes = prediction['boxes'].cpu()
             pred_labels = prediction['labels'].cpu()
@@ -57,7 +55,7 @@ def evaluate_custom(model, dataset, get_transform_func, device='cuda', iou_thres
             gt_boxes = target['boxes']
             gt_labels = target['labels']
 
-            # define is boxes match
+            # check if boxes match
             matches, unmatched_gt, unmatched_pred = match_predictions(pred_boxes, gt_boxes, iou_threshold=iou_threshold)
 
             matched_gt_labels = set()
